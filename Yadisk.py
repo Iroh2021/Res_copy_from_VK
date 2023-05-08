@@ -36,6 +36,6 @@ class Yandex:
             with open(file_path, 'rb') as f:
                 upload_file = requests.put(upload_url, files={'file': f})
                 
-            print(f'File {file_name} has been uploaded.')
+            print(f'Фото {file_name} было загруженно.')
             
-        print(f'Folder {destination_folder_name} has been created on Yandex.Disk and all files have been uploaded.')
+        print(f'Папка {destination_folder_name} была создана и все фото загруженны.')

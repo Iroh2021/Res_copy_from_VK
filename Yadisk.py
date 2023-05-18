@@ -1,10 +1,14 @@
-import os, requests
+import requests
+import os
+import time
+from tqdm import tqdm
 
 class Yandex:
     with open('YaDisk.txt', 'r') as file_object:
         token = file_object.read().strip()
 
-    folder_path = os.path.join(os.path.join(os.path.expanduser('~'), 'Desktop', 'VKphotos'))
+    folder_path = os.getcwd()
+    folder_path = os.path.join(folder_path, 'VKphotos')
 
     def get_headers(self):
         return {
@@ -22,7 +26,7 @@ class Yandex:
             params={'path': destination_folder_name},
         )
 
-        for file_path in files:
+        for file_path in tqdm(files):
             file_name = os.path.basename(file_path)
      
             upload_response = requests.get(
@@ -36,6 +40,6 @@ class Yandex:
             with open(file_path, 'rb') as f:
                 upload_file = requests.put(upload_url, files={'file': f})
                 
-            print(f'Фото {file_name} было загруженно.')
+            time.sleep(1)
             
-        print(f'Папка {destination_folder_name} была создана и все фото загруженны.')
+        print(f'Папка {destination_folder_name} была успешно создана на Ядиске и все фотографии загруженны.')

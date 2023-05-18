@@ -1,18 +1,6 @@
 import os
-from VK import VK
-from Yadisk import Yandex
-from pprint import pprint
-
-vk = VK()
-ya = Yandex()
-
-def rewrite_id_vk():
-    with open('user.txt', mode='w', encoding='utf-8') as file:
-         file.write(id_vk)
-
-def rewrite_token_yandex():
-     with open('YaDisk.txt', mode='w', encoding='utf-8') as file:
-          file.write(token_yandex)
+from vk import VK
+from yadisk import Yandex
 
 def json_file():
      json_file = []
@@ -28,12 +16,17 @@ def json_file():
           json_file.append(photo_dict)
      return json_file
 
-
 if __name__ == '__main__':
      id_vk = input("Введите свой 'id' пользователя 'vk' ")
+     with open('user.txt', mode='w', encoding='utf-8') as file:
+         file.write(id_vk)
      token_yandex = input('Введите свой Яндекс токен ')
-     rewrite_id_vk()
-     rewrite_token_yandex()
+     with open('YaDisk.txt', mode='w', encoding='utf-8') as file:
+          file.write(token_yandex)
+     vk = VK()
+     ya = Yandex()
      vk.download()
      ya.upload_folder_to_yandex_disk()
-     pprint(json_file())
+     with open('json.txt', 'w', encoding= 'utf-8') as f:
+          f.write(str(json_file()))
+     vk.delete()

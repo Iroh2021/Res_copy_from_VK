@@ -1,4 +1,6 @@
-import requests, os
+import requests
+import os
+import shutil
 
 class VK:
     url = 'https://api.vk.com/method/'
@@ -65,20 +67,29 @@ class VK:
         
         return size_lst
 
+    def folder_path(self):
+        current_dir = os.getcwd()
+        target_folder = os.path.join(current_dir, 'VKphotos')
+        os.makedirs(target_folder, exist_ok=True)
+        target_folder = os.path.abspath(target_folder)
+        return target_folder
+
     def download(self):
         photo_lst = self.photos_lst()
         likes = self.likes()
         count = 0
-        target_folder = os.path.join(os.path.join(os.path.expanduser('~'), 'Desktop'))
-        target_folder = os.path.join(target_folder, 'VKphotos')
-        os.makedirs(target_folder, exist_ok=True)
-        target_folder = os.path.abspath(target_folder)
+        target_folder = self.folder_path()
 
         for url in photo_lst:
             file_to_download = requests.get(url)
             with open(os.path.join(target_folder, str(f'Количество_лайков_{likes[count]}_номер_фото{count + 1}') + ".jpg"), 'wb') as file:
                 file.write(file_to_download.content)
                 count += 1
-                print(f'')
 
         return target_folder.split(os.path.sep)[-1]
+    
+    def delete(self):
+        target_folder = self.folder_path()
+        if os.path.exists(target_folder):
+            shutil.rmtree(target_folder)
+        print('Папка "VKphotos" была успешно удалена с компьютера')
